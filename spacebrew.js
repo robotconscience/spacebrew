@@ -32,7 +32,39 @@ spacebrew.createServer = function( opts ){
     opts.pingInterval = opts.pingInterval || 1000;
     logger.debugLevel = opts.logLevel || "warn";
 
+    // SSL: you must pass in all of these options to work!
+    if ( opts.ssl !== undefined && opts.ssl === true ){
+        if ( opts.ssl_key === undefined || opts.ssl_key == "" 
+            || opts.ssl_cert === undefined || opts.ssl_cert == "")
+        {
+            logger.log("error", "[createServer] SSL set to true, but no key and cert passed! Not setting up with SSL");
+            opts.ssl = false;
+        }
+    }
+
     logger.log("info", "[createServer] log level set to " + logger.debugLevel);
+
+    // set up with SSL?
+    var httpServ = ( opts.ssl ) ? require('https') : require('http');
+    var ssl_server      = null;
+
+    if ( opts.ssl ){
+
+        // dummy request processing
+        var processRequest = function( req, res ) {
+
+            res.writeHead(200);
+            res.end("All glory to WebSockets!\n");
+        };
+
+        ssl_server = httpServ.createServer({
+
+            // providing server with  SSL key/cert
+            key: fs.readFileSync( opts.ssl_key ),
+            cert: fs.readFileSync( opts.ssl_cert )
+
+        }, processRequest ).listen( opts.port );
+    }
 
     /**
      * startup the websocket server.
@@ -40,10 +72,19 @@ spacebrew.createServer = function( opts ){
      * The 'host = 0.0.0.0' specifies to listen to ALL incoming traffic, 
      * not just localhost or a specific IP
      */
-    var wss = new ws.Server({
+    var wss;
+    if ( opts.ssl && ssl_server != null ){
+        wss = new ws.Server({
+            port: opts.port,
+            host: opts.host,
+            server: ssl_server
+        });
+    } else {
+        wss = new ws.Server({
             port: opts.port,
             host: opts.host
         });
+    }
 
     expose.wss = wss;
 
