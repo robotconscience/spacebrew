@@ -17,6 +17,7 @@ var path = require('path')
 	, ws = require('ws')
     , logger = require('./logger')
     , spacebrew = exports
+    , fs = require('fs')
     ;
  
 //create a new WebsocketServer
@@ -75,8 +76,8 @@ spacebrew.createServer = function( opts ){
     var wss;
     if ( opts.ssl && ssl_server != null ){
         wss = new ws.Server({
-            port: opts.port,
-            host: opts.host,
+            // port: opts.port,
+            // host: opts.host,
             server: ssl_server
         });
     } else {

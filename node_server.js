@@ -25,6 +25,9 @@ var defaultPort = 9000
 	, doPing = true
 	, persist = true
 	, help = false
+    , ssl = false
+    , ssl_key = ""
+    , ssl_cert = ""
 	;
 
 /**
@@ -85,6 +88,16 @@ var processArguments = function(){
             case "--nopersist":
                 persist = false;
                 break;
+            // SSL
+            case "--ssl":
+                ssl = true;
+                break;
+            case "--ssl_key":
+                ssl_key = argv[++i];
+                break;
+            case "--ssl_cert":
+                ssl_cert = argv[++i];
+                break;
         }
     }
 };
@@ -140,6 +153,9 @@ var printHelp = function(){
     console.log("command line parameters:");
     console.log("\t--port (-p): set the port of the spacebrew server (default 9000)");
     console.log("\t--help (-h): print this help text");
+    console.log("\t--ssl : enable SSL support; you must also pass in --ssl_key and --ssl_cert");
+    console.log("\t--ssl_key : path to ssl key");
+    console.log("\t--ssl_cert : path to ssl cert");
     console.log("\t--close (-c): force close clients that don't respond to pings");
     console.log("\t--timeout (-t): minimum number of ms to wait for response pong before force closing (implies --close, default 10000 [10 seconds])");
     console.log("\t--ping: enable pinging of clients to track who is potentially disconnected (default)");
@@ -180,7 +196,10 @@ var main = function() {
 			"ping": doPing, 
 			"pingInterval": pingIntervalTime, 
 			"closeTimeout": closeTimeout, 
-			"logLevel": logger.debugLevel 
+			"logLevel": logger.debugLevel,
+            "ssl": ssl,
+            "ssl_key": ssl_key,
+            "ssl_cert": ssl_cert
 		}
 		persist_configs = { 
 			"host": "localhost", 
