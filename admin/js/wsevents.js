@@ -8,7 +8,22 @@ var ws;
 var reconnect_timer = undefined;
 
 var setupWebsocket = function(){
-	ws = new WebSocket("ws://"+server+":" + Number(port));
+
+	var pcol;
+	var u = document.URL;
+
+	/*
+	 * We open the websocket encrypted if this page came on an
+	 * https:// url itself, otherwise unencrypted
+	 */
+
+	if (u.substring(0, 5) == "https") {
+		pcol = "wss://";
+	} else {
+		pcol = "ws://";
+	}
+
+	ws = new WebSocket(pcol+server+":" + Number(port));
 
 	ws.onopen = function() {
 		console.log("WebSockets connection opened");
