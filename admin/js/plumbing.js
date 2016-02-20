@@ -69,11 +69,13 @@ setupPlumbing = function() {
 	triggerPaint();
 };
 
+var plugAnimationFrame;
+
 //probably a horrible idea, but it keeps everything aligned
 //might want to increase the interval timeout, but then it just looks choppy
 triggerPaint = function(){
 	jsPlumb.repaintEverything();
-	window.requestAnimationFrame(triggerPaint);
+	plugAnimationFrame = window.requestAnimationFrame(triggerPaint);
 };
 
 window.requestAnimationFrame = (window.requestAnimationFrame 

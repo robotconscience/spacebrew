@@ -26,20 +26,26 @@
         <div class='pubcol header' id='pubdataheader'>
           <span class='prefix'>/</span>Publishers
         </div>
-        <div class='subcol header' id='subdataheader'>
+        <div class='header' id='subdataheader'>
           <div class="pubsubsep"></div>
           <span class='prefix'>/</span>Subscribers
         </div>
-      </div>
-        <div style="overflow:scroll;height:100%;">
-          <div style="overflow:auto;" id='client_list'>
-            <div id='connectionBin'>
-            </div>
-            <div id='endpointBin'>
-            </div>
-          </div>
-          <div style="height:110px;" id='scroll_padding'></div>
+        <div class="searchbar header" id="search" style="margin-top: 10px;">
+          <div id="searchtext" style="">Filter</div>
+            <input id="searchInput" style="float: left; margin: 0px 20px 0px 0px;"/>
+          <div id="searchinfo" style="float: left; margin: 0px 20px 0px 0px;"><--Type here to filter clients. Delete to clear filter.</div>
         </div>
+      </div>
+      <div id="pubsubspacer"></div>
+      <div style="overflow:scroll;height:100%">
+        <div style="overflow:auto;" id='client_list'>
+          <div id='connectionBin'>
+          </div>
+          <div id='endpointBin'>
+          </div>
+        </div>
+        <div style="height:110px;" id='scroll_padding'></div>
+      </div>
 
     </div> <!-- /container -->
 

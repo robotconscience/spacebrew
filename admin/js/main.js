@@ -5,6 +5,7 @@ $(window).bind('load', function(){
             setupWebsocket();
             setupUserEvents();
             setupLinks();
+            setupFilter();
         });
     });
 });
@@ -97,3 +98,23 @@ var dorouteremove = function(index){
         }
     }
 };
+
+function setupFilter(){
+
+    $('#searchInput').bind('input propertychange', function() {
+        // console.log($( this ).val());
+        var text = $(this).val();
+        // console.log($('[id^="' + text + '"]'));
+        if (text.length == 0){
+            $(".clientrow").css("visibility", "visible");
+            $(".clientrow").css("display", "block");
+            // $('[id^="' + text + '"]')
+        } else {
+            $(".clientrow").css("visibility", "hidden");
+            $(".clientrow").css("display", "none");
+
+            $('[id^="' + text + '"]').css("visibility", "visible");
+            $('[id^="' + text + '"]').css("display", "block");
+        }
+    });
+}
